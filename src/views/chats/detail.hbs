@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{pageTitle}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Inter', system-ui, sans-serif;
+        background: #f3f4f6;
+        color: #111827;
+      }
+      header {
+        background: #111827;
+        color: #f9fafb;
+        padding: 1.5rem 2rem;
+      }
+      header .header-inner {
+        max-width: 900px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      header h1 {
+        margin: 0;
+        font-size: 1.4rem;
+      }
+      .header-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.6rem 1.1rem;
+        border-radius: 999px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: background 0.2s ease;
+      }
+      .btn.secondary {
+        background: #e5e7eb;
+        color: #111827;
+      }
+      .btn.secondary:hover {
+        background: #d1d5db;
+      }
+      .btn.primary {
+        background: #3b82f6;
+        color: #ffffff;
+      }
+      .btn.primary:hover {
+        background: #2563eb;
+      }
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 2rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+      }
+      .messages {
+        background: #ffffff;
+        border-radius: 1rem;
+        padding: 2rem;
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+        margin-top: 2rem;
+      }
+      .message {
+        max-width: 75%;
+        padding: 1.25rem 1.5rem;
+        border-radius: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .message.user-1 {
+        background: #dbeafe;
+        color: #1e3a8a;
+        box-shadow: 0 1px 8px rgba(59, 130, 246, 0.15);
+      }
+      .message.user-2 {
+        background: #dcfce7;
+        color: #14532d;
+        box-shadow: 0 1px 8px rgba(34, 197, 94, 0.15);
+      }
+      .message.user-3 {
+        background: #fef3c7;
+        color: #78350f;
+        box-shadow: 0 1px 8px rgba(251, 191, 36, 0.15);
+      }
+      .message.user-4 {
+        background: #fce7f3;
+        color: #831843;
+        box-shadow: 0 1px 8px rgba(236, 72, 153, 0.15);
+      }
+      .message.user-5 {
+        background: #e0e7ff;
+        color: #3730a3;
+        box-shadow: 0 1px 8px rgba(99, 102, 241, 0.15);
+      }
+      .message.user-6 {
+        background: #fed7aa;
+        color: #7c2d12;
+        box-shadow: 0 1px 8px rgba(249, 115, 22, 0.15);
+      }
+      .message.user-default {
+        background: #f3f4f6;
+        color: #374151;
+        box-shadow: 0 1px 8px rgba(107, 114, 128, 0.15);
+      }
+      .message.own {
+        margin-left: auto;
+      }
+      .message .meta {
+        font-size: 0.75rem;
+        color: #4b5563;
+      }
+      .message p {
+        margin: 0;
+        line-height: 1.6;
+        word-break: break-word;
+      }
+      .message img {
+        width: 100%;
+        max-height: 280px;
+        object-fit: cover;
+        border-radius: 0.75rem;
+      }
+      .empty {
+        padding: 2rem;
+        text-align: center;
+        color: #6b7280;
+        background: #f9fafb;
+        border-radius: 1rem;
+        box-shadow: inset 0 0 0 1px #e5e7eb;
+      }
+      form {
+        background: #ffffff;
+        border-radius: 1rem;
+        padding: 1.75rem;
+        box-shadow: 0 12px 24px rgba(15, 23, 42, 0.08);
+        display: flex;
+        flex-direction: column;
+        gap: 1.25rem;
+      }
+      label {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        font-weight: 600;
+        color: #374151;
+      }
+      textarea {
+        padding: 0.875rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.75rem;
+        font-family: inherit;
+        font-size: 0.95rem;
+        resize: vertical;
+        min-height: 100px;
+        transition: border-color 0.2s ease;
+      }
+      textarea:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+      }
+      input[type='file'] {
+        padding: 0.75rem;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.75rem;
+        font-family: inherit;
+        font-size: 0.95rem;
+        cursor: pointer;
+      }
+      button[type='submit'] {
+        padding: 0.875rem 1.5rem;
+        background: #3b82f6;
+        color: #ffffff;
+        border: none;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background 0.2s ease;
+      }
+      button[type='submit']:hover {
+        background: #2563eb;
+      }
+      .alert {
+        background: #fef2f2;
+        color: #991b1b;
+        padding: 1rem 1.25rem;
+        border-radius: 0.75rem;
+        box-shadow: inset 0 0 0 1px rgba(185, 28, 28, 0.1);
+      }
+      .alert ul {
+        margin: 0;
+        padding-left: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+      @media (max-width: 768px) {
+        .message {
+          max-width: 100%;
+        }
+      }
+      @media (max-width: 640px) {
+        header {
+          padding: 1.25rem;
+        }
+        main {
+          padding: 0 1rem;
+        }
+        .messages,
+        form {
+          padding: 1.5rem;
+        }
+      }
+    </style>
+   <script>
+      const userColorMap = {};
+      const colors = ['user-1', 'user-2', 'user-3', 'user-4', 'user-5', 'user-6'];
+      
+      function getUserColor(userId) {
+        if (!userColorMap[userId]) {
+          const existingColors = Object.values(userColorMap);
+          const availableColors = colors.filter(color => !existingColors.includes(color));
+          
+          if (availableColors.length > 0) {
+            userColorMap[userId] = availableColors[0];
+          } else {
+            let hash = 0;
+            for (let i = 0; i < userId.length; i++) {
+              hash = (hash << 5) - hash + userId.charCodeAt(i);
+              hash |= 0;
+            }
+            const index = Math.abs(hash) % colors.length;
+            userColorMap[userId] = colors[index];
+          }
+        }
+        return userColorMap[userId];
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const messages = document.querySelectorAll('.message[data-user-id]');
+        messages.forEach(message => {
+          const userId = message.getAttribute('data-user-id');
+          const colorClass = getUserColor(userId);
+          message.classList.add(colorClass);
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <h1>{{chat.title}}</h1>
+        <div class="header-actions">
+          <a class="btn secondary" href="/chat/">Inicio</a>
+          <a class="btn primary" href="/chat/ui/chats/new">Nuevo chat</a>
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="messages">
+        {{#if messages.length}}
+          {{#each messages}}
+            <article class="message user-{{userColorIndex}} {{#if isOwn}}own{{/if}}">
+              <div class="meta">{{createdAtLabel}}</div>
+              {{#if content}}
+                <p>{{content}}</p>
+              {{/if}}
+              {{#if image}}
+                <img src="{{image}}" alt="Imagen adjunta" />
+              {{/if}}
+            </article>
+          {{/each}}
+        {{else}}
+          <div class="empty">Aún no hay mensajes en este chat.</div>
+        {{/if}}
+      </section>
+      <section>
+        {{#if errors.length}}
+          <div class="alert">
+            <ul>
+              {{#each errors}}
+                <li>{{this}}</li>
+              {{/each}}
+            </ul>
+          </div>
+        {{/if}}
+        <form
+          action="/chat/ui/chats/{{chat.id}}/messages"
+          method="post"
+          enctype="multipart/form-data"
+        >
+          <label>
+            Nuevo mensaje
+            <textarea
+              name="content"
+              placeholder="Escribe tu mensaje aquí"
+            >{{form.content}}</textarea>
+          </label>
+          <label>
+            Adjuntar imagen
+            <input type="file" name="image" accept="image/*" />
+          </label>
+          <button type="submit">Enviar</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

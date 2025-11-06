@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{pageTitle}}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        margin: 0;
+        font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        background: #f3f4f6;
+        color: #111827;
+      }
+      header {
+        background: #111827;
+        color: #f9fafb;
+        padding: 1.5rem 2rem;
+      }
+      header .header-inner {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+      }
+      header h1 {
+        font-size: 1.5rem;
+        margin: 0;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.75rem 1.25rem;
+        border-radius: 999px;
+        font-size: 0.95rem;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.2s ease-in-out;
+      }
+      .btn.primary {
+        background: #2563eb;
+        color: #ffffff;
+      }
+
+
+      .btn.primary:hover {
+        background: #1d4ed8;
+      }
+      .btn.secondary {
+        background: #e5e7eb;
+        color: #1f2937;
+      }
+      .btn.secondary:hover {
+        background: #d1d5db;
+      }
+      main {
+        max-width: 1100px;
+        margin: 2rem auto;
+        padding: 0 1.5rem 3rem;
+      }
+      .grid {
+        display: grid;
+        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      }
+      .card {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        background: #ffffff;
+        box-shadow: 0 12px 25px rgba(15, 23, 42, 0.08);
+        text-decoration: none;
+        color: inherit;
+        min-height: 180px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+      }
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 16px 30px rgba(15, 23, 42, 0.12);
+      }
+      .card h2 {
+        margin: 0;
+        font-size: 1.2rem;
+
+
+      }
+      .card .preview {
+        flex: 1;
+        margin: 0;
+        color: #4b5563;
+        line-height: 1.5;
+      }
+      .card .time {
+        font-size: 0.85rem;
+        color: #6b7280;
+      }
+      .empty {
+        padding: 3rem 1.5rem;
+        border-radius: 1rem;
+        background: #ffffff;
+        box-shadow: inset 0 0 0 1px #e5e7eb;
+        text-align: center;
+        color: #6b7280;
+      }
+      .pagination {
+        margin-top: 2.5rem;
+        display: flex;
+        justify-content: center;
+      }
+      .pager {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+      .pager .status {
+        font-size: 0.95rem;
+        color: #4b5563;
+      }
+      @media (max-width: 640px) {
+        header {
+          padding: 1.25rem;
+        }
+        header h1 {
+          font-size: 1.3rem;
+        }
+        main {
+          padding: 0 1rem 2rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <h1>{{pageTitle}}</h1>
+        <a class="btn primary" href="{{createChatUrl}}">Nuevo chat</a>
+      </div>
+    </header>
+    <main>
+      {{#if chats.length}}
+        <div class="grid">
+          {{#each chats}}
+            <a class="card" href="{{link}}">
+              <h2>{{title}}</h2>
+              <p class="preview">{{messagePreview}}</p>
+              <span class="time">{{lastActivityLabel}}</span>
+            </a>
+          {{/each}}
+        </div>
+      {{else}}
+        <div class="empty">No hay chats activos.</div>
+      {{/if}}
+      <nav class="pagination">
+        <div class="pager">
+          {{#if pagination.hasPrev}}
+            <a class="btn secondary" href="?page={{pagination.prevPage}}">Anterior</a>
+          {{/if}}
+          <span class="status">
+            Página {{pagination.currentPage}} de {{pagination.totalPages}}
+          </span>
+          {{#if pagination.hasNext}}
+            <a class="btn secondary" href="?page={{pagination.nextPage}}">Siguiente</a>
+          {{/if}}
+
+
+        </div>
+      </nav>
+    </main>
+  </body>
+</html>
+
+
+

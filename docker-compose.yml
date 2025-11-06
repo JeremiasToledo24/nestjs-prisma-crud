@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: nestjs-postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-prisma}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-prisma}
+      POSTGRES_DB: ${POSTGRES_DB:-prisma}
+    volumes:
+      - nestjs_postgres_data:/var/lib/postgresql/data
+    networks:
+      - n8n_network
+    restart: unless-stopped
+
+  # NUEVO: Servicio de Redis
+  redis:
+    image: redis:alpine
+    container_name: nestjs-redis
+    volumes:
+      - nestjs_redis_data:/data # Para persistir los datos de Redis
+    networks:
+      - n8n_network
+    restart: unless-stopped
+
+  nestjs-app:
+    build: .
+    container_name: nestjs-app
+    ports:
+      - "3001:3000"
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-prisma}:${POSTGRES_PASSWORD:-prisma}@nestjs-postgres:5432/${POSTGRES_DB:-prisma}?schema=public
+      # NUEVO: Variable de entorno para la URL de Redis
+      REDIS_URL: redis://redis:6379
+      NODE_ENV: development
+      SESSION_SECRET: ${SESSION_SECRET:-tu-secreto-super-seguro-cambiar}
+      BASE_PATH: /chat
+      PORT: 3000
+    depends_on:
+      - postgres
+      - redis # NUEVO: Hacer que la app dependa de Redis
+    volumes:
+      - ./uploads:/app/uploads
+    networks:
+      - n8n_network
+    restart: unless-stopped
+
+networks:
+  n8n_network:
+    external: true
+
+volumes:
+  nestjs_postgres_data:
+  nestjs_redis_data: # NUEVO: Definir el volumen para Redis

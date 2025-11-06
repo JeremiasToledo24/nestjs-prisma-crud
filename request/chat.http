@@ -1,0 +1,27 @@
+@api = http://localhost:3000/chats
+
+### get all chats
+GET {{api}}
+
+### get single chat
+GET {{api}}/33
+
+### create a chat
+POST {{api}}
+Content-Type: application/json
+
+{
+    "title": "chat 1",
+    "description": "description 1"
+}
+
+### delete single chat
+DELETE {{api}}/5
+
+### update single chat
+PUT {{api}}/3
+Content-Type: application/json
+
+{
+    "title": "new chat"
+}

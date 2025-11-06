@@ -1,0 +1,37 @@
+Date,Project,File,Language,Time (seconds),Time (formatted)
+2025-11-04,anonchat-backend,prisma\schema.prisma,plaintext,10,10s
+2025-11-04,anonchat-backend,.env,properties,15,15s
+2025-11-04,nestjs-prisma-crud,prisma\schema.prisma,plaintext,12266,3h 24m
+2025-11-04,nestjs-prisma-crud,src\chat\chat.controller.ts,typescript,4579,1h 16m
+2025-11-04,nestjs-prisma-crud,src\message\message.controller.ts,typescript,2217,36m
+2025-11-04,nestjs-prisma-crud,src\chat\chat.sevice.ts,typescript,1389,23m
+2025-11-04,nestjs-prisma-crud,src\message\message.sevice.ts,typescript,45,45s
+2025-11-04,nestjs-prisma-crud,src\message\message.module.ts,typescript,20,20s
+2025-11-04,nestjs-prisma-crud,src\main.ts,typescript,5282,1h 28m
+2025-11-04,nestjs-prisma-crud,prisma\migrations\migration_lock.toml,plaintext,1120,18m
+2025-11-04,nestjs-prisma-crud,src\app.controller.ts,typescript,772,12m
+2025-11-04,nestjs-prisma-crud,src\app.module.ts,typescript,631,10m
+2025-11-04,nestjs-prisma-crud,src\task\task.controller.ts,typescript,15,15s
+2025-11-04,nestjs-prisma-crud,src\task\task.module.ts,typescript,10,10s
+2025-11-04,nestjs-prisma-crud,src\chat\chat.module.ts,typescript,20,20s
+2025-11-04,nestjs-prisma-crud,src\views\home.hbs,handlebars,391,6m
+2025-11-04,nestjs-prisma-crud,src\views\tasks.hbs,handlebars,15,15s
+2025-11-04,nestjs-prisma-crud,src\views\tasks\list.hbs,handlebars,20,20s
+2025-11-04,nestjs-prisma-crud,src\views\chats\new.hbs,handlebars,122,2m
+2025-11-04,nestjs-prisma-crud,src\views\chats\detail.hbs,handlebars,648,10m
+2025-11-04,nestjs-prisma-crud,Dockerfile,dockerfile,4214,1h 10m
+2025-11-04,nestjs-prisma-crud,docker-compose.yml,dockercompose,5458,1h 30m
+2025-11-04,nestjs-prisma-crud,.env,properties,5441,1h 30m
+2025-11-04,nestjs-prisma-crud,.dockerignore,plaintext,105,1m
+2025-11-04,nestjs-prisma-crud,..\AppData\Local\Programs\DeepAgent\Untitled-1,plaintext,1532,25m
+2025-11-04,nestjs-prisma-crud,nginx.conf,properties,1063,17m
+2025-11-05,nestjs-prisma-crud,src\app.controller.ts,typescript,3254,54m
+2025-11-05,nestjs-prisma-crud,src\chat\chat.controller.ts,typescript,74,1m
+2025-11-05,nestjs-prisma-crud,src\views\chats\detail.hbs,handlebars,169,2m
+2025-11-05,nestjs-prisma-crud,src\views\home.hbs,handlebars,40,40s
+2025-11-05,nestjs-prisma-crud,.env,properties,10,10s
+2025-11-05,nestjs-prisma-crud,nginx.conf,properties,91,1m
+2025-11-05,nestjs-prisma-crud,docker-compose.yml,dockercompose,265,4m
+2025-11-05,nestjs-prisma-crud,src\main.ts,typescript,304,5m
+2025-11-05,nestjs-prisma-crud,reset-docker.ps1,powershell,35,35s
+2025-11-05,nestjs-prisma-crud,src\views\chats\new.hbs,handlebars,138,2m
