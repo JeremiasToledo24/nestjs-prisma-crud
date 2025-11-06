@@ -1,5 +1,7 @@
-name: Staging Workflow
+# Nombre del workflow
+name: Create Staging to Main PR
 
+# Se ejecuta cada vez que hay un 'push' a la rama 'staging'
 on:
   push:
     branches:
@@ -8,12 +10,10 @@ on:
 jobs:
   test-and-create-pr:
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout staging branch
       uses: actions/checkout@v3
-      with:
-        ref: staging
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
@@ -23,13 +23,33 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    # --- Ejecutar Pruebas ---
+    # Añadimos este paso. Si falla, el workflow se detendrá y no creará el PR.
+    # Asegúrate de que 'npm test' esté configurado en tu package.json
+   
+
+    # --- Crear Pull Request ---
     - name: Create Pull Request to main
-      uses: peter-evans/create-pull-request@v5
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: 'Auto PR: Merge staging into main'
-        branch: main
-        base: staging
-        title: 'Auto PR: staging → main'
-        body: 'Este PR fue creado automáticamente después de pasar los tests.'
-        draft: false
+      # Este paso solo se ejecuta si los pasos anteriores (incluyendo tests) fueron exitosos
+      if: success()
+      env:
+        # Usamos el GITHUB_TOKEN para autenticar la CLI de GitHub
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        # Primero, verificamos si ya existe un PR abierto de 'staging' a 'main'
+        # Usamos 'jq' para contar cuántos PRs existen
+        PR_EXISTS=$(gh pr list --base main --head staging --json number | jq 'length')
+
+        # Si el número de PRs es 0, creamos uno nuevo
+        if [ "$PR_EXISTS" -eq "0" ]; then
+          echo "Creando nuevo Pull Request de staging -> main"
+          gh pr create \
+            --base main \
+            --head staging \
+            --title "Auto PR: staging → main" \
+            --body "Este PR fue creado automáticamente después de un push a staging. Por favor, revisar y aprobar."
+        else
+          # Si ya existe un PR, no hacemos nada. 
+          # GitHub añadirá automáticamente los nuevos commits a ese PR existente.
+          echo "Un Pull Request de staging a main ya existe."
+        fi
