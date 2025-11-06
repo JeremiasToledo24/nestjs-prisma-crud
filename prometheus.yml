@@ -1,0 +1,24 @@
+# prometheus.yml
+global:
+  scrape_interval: 15s # Cada cuánto tiempo recolectar métricas
+
+scrape_configs:
+  # 1. Mismo Prometheus
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+
+  # 2. Tu aplicación NestJS (requiere configuración en el código)
+  - job_name: 'nestjs-app'
+    static_configs:
+      - targets: ['nestjs-app:3000'] # Apunta al servicio de la app
+
+  # 3. El exporter de Redis
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['nestjs-redis-exporter:9121'] # Puerto por defecto del redis-exporter
+
+  # 4. El exporter de Postgres
+  - job_name: 'postgres'
+    static_configs:
+      - targets: ['nestjs-postgres-exporter:9187'] # Puerto por defecto del postgres-exporter

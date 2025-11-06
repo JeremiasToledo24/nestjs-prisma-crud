@@ -14,12 +14,11 @@ services:
       - n8n_network
     restart: unless-stopped
 
-  # NUEVO: Servicio de Redis
   redis:
     image: redis:alpine
     container_name: nestjs-redis
     volumes:
-      - nestjs_redis_data:/data # Para persistir los datos de Redis
+      - nestjs_redis_data:/data
     networks:
       - n8n_network
     restart: unless-stopped
@@ -31,7 +30,6 @@ services:
       - "3001:3000"
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-prisma}:${POSTGRES_PASSWORD:-prisma}@nestjs-postgres:5432/${POSTGRES_DB:-prisma}?schema=public
-      # NUEVO: Variable de entorno para la URL de Redis
       REDIS_URL: redis://redis:6379
       NODE_ENV: development
       SESSION_SECRET: ${SESSION_SECRET:-tu-secreto-super-seguro-cambiar}
@@ -39,9 +37,61 @@ services:
       PORT: 3000
     depends_on:
       - postgres
-      - redis # NUEVO: Hacer que la app dependa de Redis
+      - redis
     volumes:
       - ./uploads:/app/uploads
+      # Si tu código fuente cambia, puedes descomentar la siguiente línea para desarrollo:
+      # - ./:/app 
+    networks:
+      - n8n_network
+    restart: unless-stopped
+
+  # --- NUEVOS SERVICIOS PARA MONITOREO ---
+
+  # 1. Prometheus (Recolector de Métricas)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: nestjs-prometheus
+    ports:
+      - "9090:9090" # Acceso a la UI de Prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml # Archivo de configuración
+      - prometheus_data:/prometheus # Persistencia de datos de métricas
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - n8n_network
+    restart: unless-stopped
+
+  # 2. Grafana (Visualizador de Métricas)
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: nestjs-grafana
+    ports:
+      - "3003:3000" # Acceso a la UI de Grafana (uso el puerto 3003 para no chocar)
+    volumes:
+      - grafana_data:/var/lib/grafana # Persistencia de dashboards y configuraciones
+    networks:
+      - n8n_network
+    restart: unless-stopped
+
+  # 3. Exporter para Redis
+  redis-exporter:
+    image: oliver006/redis_exporter:latest
+    container_name: nestjs-redis-exporter
+    environment:
+      - REDIS_ADDR=redis://redis:6379 # Apunta al servicio de redis
+    networks:
+      - n8n_network
+    restart: unless-stopped
+
+  # 4. Exporter para Postgres
+  postgres-exporter:
+    image: prometheuscommunity/postgres-exporter:latest
+    container_name: nestjs-postgres-exporter
+    environment:
+      # Usa las mismas variables de entorno que tu app y postgres
+      - DATA_SOURCE_NAME=postgresql://${POSTGRES_USER:-prisma}:${POSTGRES_PASSWORD:-prisma}@nestjs-postgres:5432/${POSTGRES_DB:-prisma}?sslmode=disable
     networks:
       - n8n_network
     restart: unless-stopped
@@ -52,4 +102,6 @@ networks:
 
 volumes:
   nestjs_postgres_data:
-  nestjs_redis_data: # NUEVO: Definir el volumen para Redis
+  nestjs_redis_data:
+  prometheus_data: # NUEVO: Volumen para Prometheus
+  grafana_data:    # NUEVO: Volumen para Grafana

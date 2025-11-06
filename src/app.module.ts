@@ -2,8 +2,9 @@ import { Module } from '@nestjs/common';
 import { ChatModule } from './chat/chat.module';
 import { MessageModule } from './message/message.module';
 import { AppController } from './app.controller';
+import { MetricsModule } from './metrics/metrics.module';
 @Module({
-  imports: [ChatModule, MessageModule],
+  imports: [ChatModule, MessageModule, MetricsModule],
   controllers: [AppController],
   providers: [],
 })
