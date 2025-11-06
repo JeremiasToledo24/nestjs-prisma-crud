@@ -49,11 +49,7 @@ jobs:
             # Levanta los contenedores con Docker Compose
             # -d = modo "detached" (en segundo plano)
             # --build = Reconstruye las imágenes si hay cambios en el Dockerfile
-            docker stop nestjs-app nestjs-redis nestjs-postgres
-            docker rm nestjs-app nestjs-redis nestjs-postgres
-            docker rmi nestjs-prisma-crud-nestjs-app:latest redis:alpine postgres:15-alpine
-            docker volume rm nestjs-prisma-crud_nestjs_postgres_data nestjs-prisma-crud_nestjs_redis_data
             docker compose up -d --build
             
             # Opcional: Limpia imágenes antiguas de Docker
-            #docker image prune -f
+            docker image prune -f
