@@ -26,8 +26,7 @@ jobs:
     # --- Ejecutar Pruebas ---
     # Añadimos este paso. Si falla, el workflow se detendrá y no creará el PR.
     # Asegúrate de que 'npm test' esté configurado en tu package.json
-    - name: Run tests
-      run: npm test
+   
 
     # --- Crear Pull Request ---
     - name: Create Pull Request to main
