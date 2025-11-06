@@ -38,7 +38,7 @@ jobs:
           # Script que se ejecutará en el servidor remoto
           script: |
             # Navega al directorio de tu proyecto en el servidor
-             cd nestjs-prisma-crud/
+            cd nestjs-prisma-crud/
             
             # Descarga los últimos cambios de la rama 'main'
             git pull origin main
