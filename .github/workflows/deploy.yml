@@ -1,0 +1,59 @@
+# Nombre del workflow
+name: Deploy to Production
+
+# Disparador: Se ejecuta en cada 'push' a la rama 'main'
+on:
+  push:
+    branches:
+      - main
+
+# Trabajos (jobs) que se ejecutarán
+jobs:
+  deploy:
+    # Nombre del trabajo
+    name: Deploy to Server
+    # Usamos la última versión de Ubuntu como sistema operativo del runner
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Paso para verificar el código (opcional para este script, pero buena práctica)
+      #    Esto clona tu repositorio en el runner de GitHub
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Paso para ejecutar comandos en el servidor remoto vía SSH
+      - name: SSH and Deploy
+        # Usamos una acción popular de la comunidad para SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          # Hostname o IP de tu servidor (desde GitHub Secrets)
+          host: ${{ secrets.SSH_HOST }}
+          # Nombre de usuario en el servidor (desde GitHub Secrets)
+          username: ${{ secrets.SSH_USER }}
+          # Llave SSH privada para autenticarse (desde GitHub Secrets)
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          # Puerto SSH (opcional, por defecto es 22)
+          # port: 22
+          
+          # Script que se ejecutará en el servidor remoto
+          script: |
+            # Navega al directorio de tu proyecto en el servidor
+             cd nestjs-prisma-crud/
+            
+            # Descarga los últimos cambios de la rama 'main'
+            git pull origin main
+            
+            # Opcional: Si tus imágenes están en un registro (ej. Docker Hub)
+            # docker compose pull
+            
+            # Levanta los contenedores con Docker Compose
+            # -d = modo "detached" (en segundo plano)
+            # --build = Reconstruye las imágenes si hay cambios en el Dockerfile
+            docker stop nestjs-app nestjs-redis nestjs-postgres
+            docker rm nestjs-app nestjs-redis nestjs-postgres
+            docker rmi nestjs-prisma-crud-nestjs-app:latest redis:alpine postgres:15-alpine
+            docker volume rm nestjs-prisma-crud_nestjs_postgres_data nestjs-prisma-crud_nestjs_redis_data
+            docker compose up -d --build
+            
+            # Opcional: Limpia imágenes antiguas de Docker
+            #docker image prune -f
