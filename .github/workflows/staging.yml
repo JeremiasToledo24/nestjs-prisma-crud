@@ -1,35 +1,35 @@
-name: Staging Workflow
+name: 🚀 PR de Staging a Main
 
+# 1. ACTIVADOR
+# Se ejecuta cada vez que haces un 'push' (sync) a la rama 'staging'.
 on:
   push:
     branches:
       - staging
 
+# 2. PERMISOS
+# Necesitamos permisos para leer el contenido y escribir Pull Requests.
+permissions:
+  pull-requests: write
+  contents: read
+
+# 3. TRABAJO (JOB)
 jobs:
-  test-and-create-pr:
+  create_pr_to_main:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout staging branch
-      uses: actions/checkout@v3
-      with:
-        ref: staging
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18
-
-    - name: Install dependencies
-      run: npm install
-
-    - name: Create Pull Request to main
-      uses: peter-evans/create-pull-request@v5
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        commit-message: 'Auto PR: Merge staging into main'
-        branch: main
-        base: staging
-        title: 'Auto PR: staging → main'
-        body: 'Este PR fue creado automáticamente después de pasar los tests.'
-        draft: false
+      - name: 1. Crear Pull Request de 'staging' a 'main'
+        run: |
+          gh pr create \
+            --base main \
+            --head staging \
+            --title "🤖 [Auto-PR] Sincronizar staging -> main" \
+            --body "Este PR fue creado automáticamente por un push a 'staging'."
+        env:
+          # Usamos el token automático de GitHub para autenticar el comando
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # MUY IMPORTANTE:
+        # Si el PR ya existe o si no hay cambios, el comando 'gh pr create' falla.
+        # Con 'continue-on-error: true', hacemos que el workflow
+        # simplemente se detenga sin marcarlo como "fallido".
+        continue-on-error: true
