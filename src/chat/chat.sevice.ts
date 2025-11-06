@@ -152,4 +152,6 @@ export class ChatService {
 
     return chats
   }
+
+  /* AGREGADO COMENTARIO */
 }
