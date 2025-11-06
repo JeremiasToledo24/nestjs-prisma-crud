@@ -28,8 +28,8 @@ jobs:
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         commit-message: 'Auto PR: Merge staging into main'
-        branch: staging
-        base: main
+        branch: main
+        base: staging
         title: 'Auto PR: staging → main'
         body: 'Este PR fue creado automáticamente después de pasar los tests.'
         draft: false
