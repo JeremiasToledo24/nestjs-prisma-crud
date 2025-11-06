@@ -33,7 +33,7 @@ jobs:
           # Llave SSH privada para autenticarse (desde GitHub Secrets)
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           # Puerto SSH (opcional, por defecto es 22)
-          # port: 22
+          port: 5500
           
           # Script que se ejecutará en el servidor remoto
           script: |
