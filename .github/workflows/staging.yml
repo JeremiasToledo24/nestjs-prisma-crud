@@ -6,12 +6,14 @@ on:
       - staging
 
 jobs:
-  test-and-merge:
+  test-and-create-pr:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout staging branch
       uses: actions/checkout@v3
+      with:
+        ref: staging
 
     - name: Setup Node.js
       uses: actions/setup-node@v3
@@ -24,12 +26,13 @@ jobs:
     - name: Run tests
       run: npm run test
 
-    - name: Merge staging into main
-      uses: devops-infra/action-pull-request@v0.3.3
+    - name: Create Pull Request to main
+      uses: peter-evans/create-pull-request@v5
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        source_branch: staging
-        target_branch: main
-        pr_title: 'Auto merge staging into main'
-        pr_body: 'Automated merge after successful tests'
-        pr_draft: false
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: 'Auto PR: Merge staging into main'
+        branch: staging
+        base: main
+        title: 'Auto PR: staging → main'
+        body: 'Este PR fue creado automáticamente después de pasar los tests.'
+        draft: false
