@@ -10,7 +10,7 @@ scrape_configs:
 
   # 2. Monitorea tu App NestJS
   - job_name: 'nestjs-app'
-    metrics_path: /chat/metrics # <-- ¡MUY IMPORTANTE!
+    metrics_path: /chat/chat/metrics # <-- ¡MUY IMPORTANTE!
     # Usamos el nombre del contenedor y el puerto INTERNO
     static_configs:
       - targets: ['nestjs-app:3000'] 
