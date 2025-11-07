@@ -73,10 +73,9 @@ services:
       - grafana_data:/var/lib/grafana
     
     # --- AÑADIR ESTAS LÍNEAS ---
-    environment:
-      # URL completa por la que accederás
-      - GF_SERVER_ROOT_URL=https://vps-5081896-x.dattaweb.com/grafana
-      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+    #environment:
+    #  - GF_SERVER_ROOT_URL=https://vps-5081896-x.dattaweb.com/grafana
+    #  - GF_SERVER_SERVE_FROM_SUB_PATH=true
     # --- FIN DE LO AÑADIDO ---
 
     networks:
@@ -104,10 +103,12 @@ services:
       - n8n_network
     restart: unless-stopped
 
+#networks:
+#  n8n_network:
+#    external: true
 networks:
   n8n_network:
-    external: true
-
+    name: n8n_network
 volumes:
   nestjs_postgres_data:
   nestjs_redis_data:
