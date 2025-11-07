@@ -8,6 +8,8 @@ import { join } from 'path';
 // --- NUEVAS IMPORTACIONES ---
 import { RedisStore } from 'connect-redis';
 import { createClient } from 'redis';
+import { MetricsService } from './metrics/metrics.service';
+import { MetricsInterceptor } from './metrics/metrics.interceptor';
 // --------------------------
 
 async function bootstrap() {
@@ -49,7 +51,10 @@ async function bootstrap() {
     prefix: 'chat-session:', // Un prefijo para tus claves de sesión en Redis
   });
   // ------------------------------------
-
+// --- APLICA EL INTERCEPTOR ---
+  // Obtén la instancia del servicio de métricas
+  const metricsService = app.get(MetricsService);
+  app.useGlobalInterceptors(new MetricsInterceptor(metricsService));
   app.use(
     session({
       // --- CAMBIO PRINCIPAL: USAR REDISSTORE ---
