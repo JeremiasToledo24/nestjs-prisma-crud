@@ -68,9 +68,17 @@ services:
     image: grafana/grafana-oss:latest
     container_name: nestjs-grafana
     ports:
-      - "3003:3000" # Acceso a la UI de Grafana (uso el puerto 3003 para no chocar)
+      - "3003:3000" # Acceso a la UI de Grafana
     volumes:
-      - grafana_data:/var/lib/grafana # Persistencia de dashboards y configuraciones
+      - grafana_data:/var/lib/grafana
+    
+    # --- AÑADIR ESTAS LÍNEAS ---
+    environment:
+      # URL completa por la que accederás
+      - GF_SERVER_ROOT_URL=https://vps-5081896-x.dattaweb.com/grafana
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+    # --- FIN DE LO AÑADIDO ---
+
     networks:
       - n8n_network
     restart: unless-stopped
