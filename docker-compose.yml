@@ -75,7 +75,7 @@ services:
     # --- AÑADIR ESTAS LÍNEAS ---
     environment:
       # URL completa por la que accederás
-      - GF_SERVER_ROOT_URL=https://vps-5081896-x.dattaweb.com/grafana/
+      - GF_SERVER_ROOT_URL=https://vps-5081896-x.dattaweb.com/grafana
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
     # --- FIN DE LO AÑADIDO ---
 
