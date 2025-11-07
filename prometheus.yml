@@ -13,7 +13,7 @@ scrape_configs:
     metrics_path: /chat/metrics # <-- ¡MUY IMPORTANTE!
     # Usamos el nombre del contenedor y el puerto INTERNO
     static_configs:
-      - targets: ['nestjs-app:3000'] 
+      - targets: ['nestjs-app:3001'] 
 
   # 3. Monitorea el exporter de Redis
   - job_name: 'redis-exporter'
