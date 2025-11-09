@@ -105,10 +105,11 @@ services:
 
 #networks:
 #  n8n_network:
-#    external: true
+
 networks:
   n8n_network:
     name: n8n_network
+    external: true
 volumes:
   nestjs_postgres_data:
   nestjs_redis_data:
