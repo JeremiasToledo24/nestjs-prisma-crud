@@ -106,12 +106,12 @@ services:
 #networks:
 #  n8n_network:
 
-networks:
-  n8n_network:
-    name: n8n_network
-    external: true
-volumes:
-  nestjs_postgres_data:
-  nestjs_redis_data:
-  prometheus_data: # NUEVO: Volumen para Prometheus
-  grafana_data:    # NUEVO: Volumen para Grafana
+  networks:
+    n8n_network:
+      name: n8n_network
+      external: true
+  volumes:
+    nestjs_postgres_data:
+    nestjs_redis_data:
+    prometheus_data: # NUEVO: Volumen para Prometheus
+    grafana_data:    # NUEVO: Volumen para Grafana
