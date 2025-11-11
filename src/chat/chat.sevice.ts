@@ -19,25 +19,57 @@ export class ChatService {
       orderBy: { createdAt: 'desc' }
     });
   }
-
   async getRecentChats(
+    page: number,
+    limit: number,
+  ): Promise<{ items: Chat[]; total: number; currentPage: number; totalPages: number }> {
+    const requestedPage = Math.max(page, 1);
+    const take = Math.max(limit, 1);
+    const twelveHoursAgo = new Date();
+    twelveHoursAgo.setHours(twelveHoursAgo.getHours() - 12);
+    const whereClause = {
+      lastMessageAt: {
+        gt: twelveHoursAgo,
+      },
+    };
+    const total = await this.prisma.chat.count({ where: whereClause });
+    const totalPages = Math.max(Math.ceil(total / take), 1);
+    const currentPage = Math.min(requestedPage, totalPages);
+    const skip = (currentPage - 1) * take;
+    const items = total
+      ? await this.prisma.chat.findMany({
+          where: whereClause,
+          orderBy: [
+            { lastMessageAt: 'desc' },
+            { createdAt: 'desc' },
+          ],
+          skip,
+          take,
+        })
+      : [];
+    return { items, total, currentPage, totalPages };
+  }
+  /* async getRecentChats(
     page: number,
     limit: number,
   ): Promise<{ items: Chat[]; total: number }> {
     const sanitizedPage = Math.max(page, 1);
     const take = Math.max(limit, 1);
     const skip = (sanitizedPage - 1) * take;
+    console.log('Skip:', skip, 'Sanitized Page:', sanitizedPage, 'Take:', take);
 
     const twelveHoursAgo = new Date();
     twelveHoursAgo.setHours(twelveHoursAgo.getHours() - 12);
 
+    const whereClause = {
+      lastMessageAt: {
+        gt: twelveHoursAgo
+      }
+    };
+    
     const [items, total] = await this.prisma.$transaction([
       this.prisma.chat.findMany({
-        where: {
-          lastMessageAt: {
-            gt: twelveHoursAgo
-          }
-        },
+        where: whereClause,
         orderBy: [
           { lastMessageAt: 'desc' },
           { createdAt: 'desc' },
@@ -45,13 +77,12 @@ export class ChatService {
         skip,
         take,
       }),
-      this.prisma.chat.count(),
-
+      this.prisma.chat.count({where: whereClause}),
     ]);
     return { items, total };
 
 
-  }
+  } */
 
   async getChatWithMessages(
     id: string,

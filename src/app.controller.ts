@@ -62,30 +62,21 @@ export class AppController {
 
     @Get()
     @Render('home')
-    async home(@Query('page') page = '1') {
+        async home(@Query('page') page = '1') {
         const pageSize = this.pageSize;
-        let currentPage = Math.max(parseInt(page, 10) || 1, 1);
-        let { items, total } = await this.chatService.getRecentChats(
+        const requestedPage = Math.max(parseInt(page, 10) || 1, 1);
+        const {
+            items,
+            total,
             currentPage,
-            pageSize,
-        );
-        const totalPages = Math.max(Math.ceil(total / pageSize), 1);
-        if (currentPage > totalPages && total > 0) {
-            currentPage = totalPages;
-            ({ items } = await this.chatService.getRecentChats(
-                currentPage,
-                pageSize,
-            ));
-        }
+            totalPages,
+        } = await this.chatService.getRecentChats(requestedPage, pageSize);
         const chats = items.map((chat) => {
             const lastActivity = chat.lastMessageAt ?? chat.createdAt;
             const previewBase =
-                (chat.lastMessagePreview ?? chat.message ?? '').trim() ||
-                'Sin mensajes';
+                (chat.lastMessagePreview ?? chat.message ?? '').trim() || 'Sin mensajes';
             const preview =
-                previewBase.length > 120
-                    ? `${previewBase.slice(0, 117)}...`
-                    : previewBase;
+                previewBase.length > 120 ? `${previewBase.slice(0, 117)}...` : previewBase;
             return {
                 id: chat.id,
                 title: chat.title,

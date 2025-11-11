@@ -103,14 +103,14 @@ services:
       - n8n_network
     restart: unless-stopped
 
-#networks:
-#  n8n_network:
+networks:
+  n8n_network:
 
-  networks:
-    n8n_network:
-      name: n8n_network
-      external: true
-  volumes:
+  #networks:
+  #  n8n_network:
+  #    name: n8n_network
+  #    external: true
+volumes:
     nestjs_postgres_data:
     nestjs_redis_data:
     prometheus_data: # NUEVO: Volumen para Prometheus
